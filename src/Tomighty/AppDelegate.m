@@ -224,7 +224,8 @@
     NSString *title = [NSString stringWithFormat:@"%@ finished", [context name]];
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     [notification setTitle:title];
-    [notification setSoundName:NSUserNotificationDefaultSoundName];
+    if (&NSUserNotificationDefaultSoundName) // not defined in 10.7!
+        [notification setSoundName:NSUserNotificationDefaultSoundName];
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
 
