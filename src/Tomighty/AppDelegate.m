@@ -224,7 +224,9 @@
     NSString *title = [NSString stringWithFormat:@"%@ finished", [context name]];
     NSUserNotification *notification = [[NSUserNotification alloc] init];
     [notification setTitle:title];
-    if (&NSUserNotificationDefaultSoundName) // not defined in 10.7!
+
+    // play notification sound only when not playing our sound. Notification sound was not defined in 10.7 so test for this too.
+    if (![Preferences boolForKey:PREF_SOUND_TIMER_FINISH] && &NSUserNotificationDefaultSoundName)
         [notification setSoundName:NSUserNotificationDefaultSoundName];
     [[NSUserNotificationCenter defaultUserNotificationCenter] deliverNotification:notification];
 }
