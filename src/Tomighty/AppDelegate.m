@@ -48,8 +48,17 @@
 }
 
 - (void)preferencesChangedNotification:(NSNotification *)notif {
-    if (notif.userInfo[PREF_CHANGED_NOTIFICATION_ITEM_KEY] == PREF_GENERAL_SHOW_IN_STATUS) {
+    NSString *changedKey = notif.userInfo[PREF_CHANGED_NOTIFICATION_ITEM_KEY];
+    
+    if ([changedKey isEqualToString:PREF_GENERAL_SHOW_IN_STATUS]) {
         [self updateStatusBarTitle:timer.secondsRemaining justStarted:NO];
+    }
+    
+    if ([changedKey isEqualToString:PREF_SOUND_TICTAC_POMODORO] || [changedKey isEqualToString:PREF_SOUND_TICTAC_BREAK]) {
+        [sounds stopTicTac];
+        if(timer.context && [self shouldPlayTicTacSound:timer.context]) {
+            [sounds startTicTac];
+        }
     }
 }
 
