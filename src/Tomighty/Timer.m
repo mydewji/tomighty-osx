@@ -25,6 +25,8 @@
 - (void)start:(NSInteger)minutes context:(TimerContext *)aContext {
     _secondsRemaining = minutes * SIXTY_SECONDS;
     _context = aContext;
+    _paused = NO;
+    _active = YES;
     [self startTimer];
     [self.listener timerStarted:_secondsRemaining context:_context];
 }
@@ -39,11 +41,17 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)stop {
+- (void)stopTimer {
     [timer invalidate];
     timer = nil;
+}
+
+- (void)stop {
+    [self stopTimer];
     _context = nil;
     _secondsRemaining = 0;
+    _paused = NO;
+    _active = NO;
     [self.listener timerStopped];
 }
 
@@ -60,6 +68,18 @@
     TimerContext *context = _context;
     [self stop]; // we must backup context because it will get cleared in stop call
     [self.listener timerFinished:context];
+}
+
+- (void)setPaused:(BOOL)paused {
+    if (_paused != paused) {
+        _paused = paused;
+
+        if (_paused) {
+            [self stopTimer];
+        } else {
+            [self startTimer];
+        }
+    }
 }
 
 @end

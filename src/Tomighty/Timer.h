@@ -18,6 +18,8 @@
 
 @property(nonatomic, weak) id <TimerListener> listener;
 
+@property(nonatomic, getter=isPaused) BOOL paused;
+@property(nonatomic, readonly, getter=isRunning) BOOL active;
 
 - (id)initWithListener:(id <TimerListener>)listener;
 

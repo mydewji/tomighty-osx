@@ -38,6 +38,7 @@
     [self initMenuItemsIcons];
     [self updateRemainingTime:0];
     [self updateStatusBarTitle:0 justStarted:NO];
+    [self updateTimerControlMenuItems];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesChangedNotification:) name:PREF_CHANGED_NOTIFICATION object:nil];
 }
@@ -59,6 +60,15 @@
             [sounds startTicTac];
         }
     }
+
+    if ([changedKey isEqualToString:PREF_GENERAL_ALLOW_PAUSE]) {
+        [self updateTimerControlMenuItems];
+
+        // unpause in case we were paused and pause menu item is hidden
+        if (![Preferences boolForKey:PREF_GENERAL_ALLOW_PAUSE] && timer.paused) {
+            timer.paused = NO;
+        }
+    }
 }
 
 - (void)initMenuItemsIcons {
@@ -67,6 +77,7 @@
     [self.startPomodoroMenuItem setImage:[ImageLoader loadIcon:@"start-pomodoro"]];
     [self.startShortBreakMenuItem setImage:[ImageLoader loadIcon:@"start-short-break"]];
     [self.startLongBreakMenuItem setImage:[ImageLoader loadIcon:@"start-long-break"]];
+    [self.pauseTimerMenuItem setImage:[ImageLoader loadIcon:@"pause"]];
 }
 
 - (IBAction)showPreferences:(id)sender {
@@ -108,6 +119,11 @@
     [timer stop];
 }
 
+- (IBAction)pauseTimer:(id)sender {
+    timer.paused = !timer.paused;
+    [self updateTimerControlMenuItems];
+}
+
 - (void)timerTick:(NSInteger)secondsRemaining {
     [self updateRemainingTime:secondsRemaining];
     [self updateStatusBarTitle:secondsRemaining justStarted:NO];
@@ -116,7 +132,7 @@
 - (void)timerStarted:(NSInteger)secondsRemaining context:(TimerContext *)context {
     [self updateRemainingTime:secondsRemaining];
     [self updateStatusBarTitle:secondsRemaining justStarted:YES];
-    [self.stopTimerMenuItem setEnabled:YES];
+    [self updateTimerControlMenuItems];
 
     if ([Preferences boolForKey:PREF_SOUND_TIMER_START]) {
         [sounds crank];
@@ -132,7 +148,7 @@
     [statusIcon normal];
     [self updateRemainingTime:0];
     [self updateStatusBarTitle:0 justStarted:NO];
-    [self.stopTimerMenuItem setEnabled:NO];
+    [self updateTimerControlMenuItems];
     [self deactivateAllTimerMenuItems];
 }
 
@@ -163,6 +179,13 @@
     [self activateTimerMenuItem:NSOffState menuItem:self.startPomodoroMenuItem];
     [self activateTimerMenuItem:NSOffState menuItem:self.startShortBreakMenuItem];
     [self activateTimerMenuItem:NSOffState menuItem:self.startLongBreakMenuItem];
+}
+
+- (void)updateTimerControlMenuItems {
+    [self.pauseTimerMenuItem setHidden:![Preferences boolForKey:PREF_GENERAL_ALLOW_PAUSE]];
+    self.pauseTimerMenuItem.title = timer.paused ? @"Resume" : @"Pause";
+    [self.stopTimerMenuItem setEnabled:timer.active];
+    [self.pauseTimerMenuItem setEnabled:timer.active];
 }
 
 - (void)updateRemainingTime:(NSInteger)secondsRemaining {

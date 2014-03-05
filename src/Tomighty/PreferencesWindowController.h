@@ -18,6 +18,7 @@
 @property(weak) IBOutlet NSButton *sound_tictac_during_pomodoro;
 @property(weak) IBOutlet NSButton *sound_tictac_during_break;
 @property(weak) IBOutlet NSPopUpButton *general_show_in_status;
+@property(weak) IBOutlet NSButton *general_allow_pause;
 
 
 - (IBAction)save_time_pomodoro:(id)sender;
@@ -35,5 +36,7 @@
 - (IBAction)save_sound_play_tictac_during_break:(id)sender;
 
 - (IBAction)save_general_show_in_status:(id)sender;
+
+- (IBAction)save_general_allow_pause:(id)sender;
 
 @end
