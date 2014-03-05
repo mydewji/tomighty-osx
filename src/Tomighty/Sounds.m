@@ -9,9 +9,9 @@
 #import "Sounds.h"
 
 @implementation Sounds {
-    __strong NSSound *crankSound;
-    __strong NSSound *ticTacSound;
-    __strong NSSound *bell;
+    NSSound *crankSound;
+    NSSound *ticTacSound;
+    NSSound *bell;
 }
 
 - (id)init {

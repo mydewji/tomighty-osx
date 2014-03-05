@@ -7,33 +7,26 @@
 //
 
 #import "Timer.h"
-#import "TimerContext.h"
-#import "TimerListener.h"
 
 #define SIXTY_SECONDS 60
 
 @implementation Timer {
-    NSInteger secondsRemaining;
-    __strong NSTimer *timer;
-    __strong TimerContext *context;
-    __weak id <TimerListener> listener;
+    NSTimer *timer;
 }
-@synthesize secondsRemaining = secondsRemaining;
-@synthesize context = context;
 
 - (id)initWithListener:(id <TimerListener>)aListener {
     self = [super init];
     if (self) {
-        listener = aListener;
+        _listener = aListener;
     }
     return self;
 }
 
 - (void)start:(NSInteger)minutes context:(TimerContext *)aContext {
-    secondsRemaining = minutes * SIXTY_SECONDS;
-    context = aContext;
+    _secondsRemaining = minutes * SIXTY_SECONDS;
+    _context = aContext;
     [self startTimer];
-    [listener timerStarted:secondsRemaining context:context];
+    [self.listener timerStarted:_secondsRemaining context:_context];
 }
 
 - (void)startTimer {
@@ -49,25 +42,24 @@
 - (void)stop {
     [timer invalidate];
     timer = nil;
-    context = nil;
-    secondsRemaining = 0;
-    [listener timerStopped];
+    _context = nil;
+    _secondsRemaining = 0;
+    [self.listener timerStopped];
 }
 
 - (void)tick:(NSTimer *)aTimer {
-    secondsRemaining--;
-    if (secondsRemaining > 0) {
-        [listener timerTick:secondsRemaining];
-    }
-    else {
+    _secondsRemaining--;
+    if (_secondsRemaining > 0) {
+        [self.listener timerTick:_secondsRemaining];
+    } else {
         [self finished];
     }
 }
 
 - (void)finished {
-    TimerContext *aContext = context;
+    TimerContext *context = _context;
     [self stop]; // we must backup context because it will get cleared in stop call
-    [listener timerFinished:aContext];
+    [self.listener timerFinished:context];
 }
 
 @end

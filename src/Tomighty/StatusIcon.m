@@ -10,12 +10,12 @@
 #import "ImageLoader.h"
 
 @implementation StatusIcon {
-    __strong NSStatusItem *statusItem;
-    __strong NSImage *blackIcon;
-    __strong NSImage *whiteIcon;
-    __strong NSImage *redIcon;
-    __strong NSImage *greenIcon;
-    __strong NSImage *blueIcon;
+    NSStatusItem *statusItem;
+    NSImage *blackIcon;
+    NSImage *whiteIcon;
+    NSImage *redIcon;
+    NSImage *greenIcon;
+    NSImage *blueIcon;
 }
 
 - (id)initWithStatusMenu:(NSMenu *)statusMenu {

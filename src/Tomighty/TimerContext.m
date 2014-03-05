@@ -8,20 +8,14 @@
 
 #import "TimerContext.h"
 
-@implementation TimerContext {
-    __strong NSString *name;
-}
+@implementation TimerContext
 
-- (id)initWithName:(NSString *)aName {
+- (id)initWithName:(NSString *)name {
     self = [super init];
     if (self) {
-        name = aName;
+        _name = name;
     }
     return self;
-}
-
-- (NSString *)name {
-    return name;
 }
 
 @end

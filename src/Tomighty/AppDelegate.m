@@ -16,14 +16,14 @@
 #import "Tomighty.h"
 
 @implementation AppDelegate {
-    __strong Tomighty *tomighty;
-    __strong Timer *timer;
-    __strong StatusIcon *statusIcon;
-    __strong PreferencesWindowController *preferencesWindow;
-    __strong Sounds *sounds;
-    __strong TimerContext *pomodoroContext;
-    __strong TimerContext *shortBreakContext;
-    __strong TimerContext *longBreakContext;
+    Tomighty *tomighty;
+    Timer *timer;
+    StatusIcon *statusIcon;
+    PreferencesWindowController *preferencesWindow;
+    Sounds *sounds;
+    TimerContext *pomodoroContext;
+    TimerContext *shortBreakContext;
+    TimerContext *longBreakContext;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -198,7 +198,7 @@
 }
 
 - (void)updatePomodoroCountText {
-    NSInteger pomodoroCount = [tomighty pomodoroCount];
+    NSInteger pomodoroCount = tomighty.pomodoroCount;
     BOOL isPlural = pomodoroCount > 1;
     NSString *text =
             pomodoroCount > 0 ?

@@ -10,8 +10,8 @@
 
 @interface TimerContext : NSObject
 
-- (id)initWithName:(NSString *)name;
+@property(nonatomic, readonly) NSString *name;
 
-- (NSString *)name;
+- (id)initWithName:(NSString *)name;
 
 @end

@@ -16,6 +16,9 @@
 @property(nonatomic, readonly) NSInteger secondsRemaining;
 @property(nonatomic, readonly) TimerContext *context;
 
+@property(nonatomic, weak) id <TimerListener> listener;
+
+
 - (id)initWithListener:(id <TimerListener>)listener;
 
 - (void)start:(NSInteger)minutes context:(TimerContext *)context;
