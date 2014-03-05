@@ -20,6 +20,7 @@
     __weak id <TimerListener> listener;
 }
 @synthesize secondsRemaining = secondsRemaining;
+@synthesize context = context;
 
 - (id)initWithListener:(id <TimerListener>)aListener {
     self = [super init];
@@ -49,6 +50,8 @@
 - (void)stop {
     [timer invalidate];
     timer = nil;
+    context = nil;
+    secondsRemaining = 0;
     [listener timerStopped];
 }
 
@@ -63,9 +66,9 @@
 }
 
 - (void)finished {
-    [self stop];
-    [listener timerFinished:context];
-    context = nil;
+    TimerContext *aContext = context;
+    [self stop]; // we must backup context because it will get cleared in stop call
+    [listener timerFinished:aContext];
 }
 
 @end
