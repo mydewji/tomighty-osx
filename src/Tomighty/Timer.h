@@ -17,7 +17,9 @@
 @property(nonatomic, readonly) TimerContext *context;
 
 - (id)initWithListener:(id <TimerListener>)listener;
+
 - (void)start:(NSInteger)minutes context:(TimerContext *)context;
+
 - (void)stop;
 
 @end

@@ -11,14 +11,12 @@
 
 @implementation PreferencesWindowController
 
-- (id)init
-{
+- (id)init {
     self = [super initWithWindowNibName:@"PreferencesWindow"];
     return self;
 }
 
-- (void)windowDidLoad
-{
+- (void)windowDidLoad {
     [super windowDidLoad];
     [self.time_pomodoro setIntegerValue:[Preferences integerForKey:PREF_TIME_POMODORO]];
     [self.time_shortBreak setIntegerValue:[Preferences integerForKey:PREF_TIME_SHORT_BREAK]];
@@ -36,34 +34,34 @@
 }
 
 - (IBAction)save_time_pomodoro:(id)sender {
-	[Preferences setInteger:[self.time_pomodoro integerValue] forKey:PREF_TIME_POMODORO];
+    [Preferences setInteger:[self.time_pomodoro integerValue] forKey:PREF_TIME_POMODORO];
 }
 
 - (IBAction)save_time_shortBreak:(id)sender {
-	[Preferences setInteger:[self.time_shortBreak integerValue] forKey:PREF_TIME_SHORT_BREAK];
+    [Preferences setInteger:[self.time_shortBreak integerValue] forKey:PREF_TIME_SHORT_BREAK];
 }
 
 - (IBAction)save_time_longBreak:(id)sender {
-	[Preferences setInteger:[self.time_longBreak integerValue] forKey:PREF_TIME_LONG_BREAK];
+    [Preferences setInteger:[self.time_longBreak integerValue] forKey:PREF_TIME_LONG_BREAK];
 }
 
 - (IBAction)save_sound_play_on_timer_start:(id)sender {
-	[Preferences setBool:([self.sound_on_timer_start state] == NSOnState) forKey:PREF_SOUND_TIMER_START];
+    [Preferences setBool:([self.sound_on_timer_start state] == NSOnState) forKey:PREF_SOUND_TIMER_START];
 }
 
 - (IBAction)save_sound_play_on_timer_finish:(id)sender {
-	[Preferences setBool:([self.sound_on_timer_finish state] == NSOnState) forKey:PREF_SOUND_TIMER_FINISH];
+    [Preferences setBool:([self.sound_on_timer_finish state] == NSOnState) forKey:PREF_SOUND_TIMER_FINISH];
 }
 
 - (IBAction)save_sound_play_tictac_during_pomodoro:(id)sender {
-	[Preferences setBool:([self.sound_tictac_during_pomodoro state] == NSOnState) forKey:PREF_SOUND_TICTAC_POMODORO];
+    [Preferences setBool:([self.sound_tictac_during_pomodoro state] == NSOnState) forKey:PREF_SOUND_TICTAC_POMODORO];
 }
 
 - (IBAction)save_sound_play_tictac_during_break:(id)sender {
-	[Preferences setBool:([self.sound_tictac_during_break state] == NSOnState) forKey:PREF_SOUND_TICTAC_BREAK];
+    [Preferences setBool:([self.sound_tictac_during_break state] == NSOnState) forKey:PREF_SOUND_TICTAC_BREAK];
 }
 
--(IBAction)save_general_show_in_status:(id)sender {
+- (IBAction)save_general_show_in_status:(id)sender {
     [Preferences setInteger:self.general_show_in_status.indexOfSelectedItem forKey:PREF_GENERAL_SHOW_IN_STATUS];
 }
 

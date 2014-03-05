@@ -15,8 +15,7 @@
 #import "Timer.h"
 #import "Tomighty.h"
 
-@implementation AppDelegate
-{
+@implementation AppDelegate {
     __strong Tomighty *tomighty;
     __strong Timer *timer;
     __strong StatusIcon *statusIcon;
@@ -35,12 +34,12 @@
     pomodoroContext = [[TimerContext alloc] initWithName:@"Pomodoro"];
     shortBreakContext = [[TimerContext alloc] initWithName:@"Short break"];
     longBreakContext = [[TimerContext alloc] initWithName:@"Long break"];
-    
+
     [self initMenuItemsIcons];
     [self updateRemainingTime:0];
     [self updateStatusBarTitle:0 justStarted:NO];
-    
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(preferencesChangedNotification:) name:PREF_CHANGED_NOTIFICATION object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferencesChangedNotification:) name:PREF_CHANGED_NOTIFICATION object:nil];
 }
 
 - (void)dealloc {
@@ -49,14 +48,14 @@
 
 - (void)preferencesChangedNotification:(NSNotification *)notif {
     NSString *changedKey = notif.userInfo[PREF_CHANGED_NOTIFICATION_ITEM_KEY];
-    
+
     if ([changedKey isEqualToString:PREF_GENERAL_SHOW_IN_STATUS]) {
         [self updateStatusBarTitle:timer.secondsRemaining justStarted:NO];
     }
-    
+
     if ([changedKey isEqualToString:PREF_SOUND_TICTAC_POMODORO] || [changedKey isEqualToString:PREF_SOUND_TICTAC_BREAK]) {
         [sounds stopTicTac];
-        if(timer.context && [self shouldPlayTicTacSound:timer.context]) {
+        if (timer.context && [self shouldPlayTicTacSound:timer.context]) {
             [sounds startTicTac];
         }
     }
@@ -71,7 +70,7 @@
 }
 
 - (IBAction)showPreferences:(id)sender {
-    if(!preferencesWindow) {
+    if (!preferencesWindow) {
         preferencesWindow = [[PreferencesWindowController alloc] init];
     }
     [preferencesWindow showWindow:nil];
@@ -118,12 +117,12 @@
     [self updateRemainingTime:secondsRemaining];
     [self updateStatusBarTitle:secondsRemaining justStarted:YES];
     [self.stopTimerMenuItem setEnabled:YES];
-    
-    if([Preferences boolForKey:PREF_SOUND_TIMER_START]) {
+
+    if ([Preferences boolForKey:PREF_SOUND_TIMER_START]) {
         [sounds crank];
     }
-    
-    if([self shouldPlayTicTacSound:context]) {
+
+    if ([self shouldPlayTicTacSound:context]) {
         [sounds startTicTac];
     }
 }
@@ -138,14 +137,14 @@
 }
 
 - (void)timerFinished:(TimerContext *)context {
-    if([Preferences boolForKey:PREF_SOUND_TIMER_FINISH]) {
+    if ([Preferences boolForKey:PREF_SOUND_TIMER_FINISH]) {
         [sounds bell];
     }
-    
-    if(context == pomodoroContext) {
+
+    if (context == pomodoroContext) {
         [self incrementPomodoroCount];
     }
-    
+
     [self showFinishNotification:context];
 }
 
@@ -169,8 +168,8 @@
 - (void)updateRemainingTime:(NSInteger)secondsRemaining {
     NSInteger minutes = secondsRemaining / 60;
     NSInteger seconds = secondsRemaining % 60;
-    
-    NSString *text = [NSString stringWithFormat:@"%02d:%02d", (int)minutes, (int)seconds];
+
+    NSString *text = [NSString stringWithFormat:@"%02d:%02d", (int) minutes, (int) seconds];
     [self.remainingTimeMenuItem setTitle:text];
 }
 
@@ -178,21 +177,21 @@
     // just started parameter is used to prevent flickering when starting timer and
     // we should display remaining minutes in status bar (it would show 26min for the
     // first second and then 25min otherwise)
-    
+
     NSInteger showInStatus = [Preferences integerForKey:PREF_GENERAL_SHOW_IN_STATUS];
     if (showInStatus == 0) {
         [statusIcon setTitle:@""];
-    } else if (secondsRemaining <= 0){
+    } else if (secondsRemaining <= 0) {
         [statusIcon setTitle:@" Stopped"];
     } else {
         NSInteger minutes = secondsRemaining / 60;
         NSInteger seconds = secondsRemaining % 60;
-    
+
         NSString *text = nil;
         if (showInStatus == 1) {
-            text = [NSString stringWithFormat:@" %d m", (int)minutes + (justStarted ? 0:1)];
+            text = [NSString stringWithFormat:@" %d m", (int) minutes + (justStarted ? 0 : 1)];
         } else if (showInStatus == 2) {
-            text = [NSString stringWithFormat:@" %02d:%02d", (int)minutes, (int)seconds];
+            text = [NSString stringWithFormat:@" %02d:%02d", (int) minutes, (int) seconds];
         }
         [statusIcon setTitle:text];
     }
@@ -202,9 +201,9 @@
     NSInteger pomodoroCount = [tomighty pomodoroCount];
     BOOL isPlural = pomodoroCount > 1;
     NSString *text =
-        pomodoroCount > 0 ?
-            [NSString stringWithFormat:@"%d full pomodoro%@", (int)pomodoroCount, isPlural ? @"s" : @""]
-            : @"No full pomodoro yet";
+            pomodoroCount > 0 ?
+                    [NSString stringWithFormat:@"%d full pomodoro%@", (int) pomodoroCount, isPlural ? @"s" : @""]
+                    : @"No full pomodoro yet";
     [self.pomodoroCountMenuItem setTitle:text];
 }
 
@@ -215,7 +214,7 @@
 }
 
 - (BOOL)shouldPlayTicTacSound:(TimerContext *)context {
-    if(context == pomodoroContext)
+    if (context == pomodoroContext)
         return [Preferences boolForKey:PREF_SOUND_TICTAC_POMODORO];
     else
         return [Preferences boolForKey:PREF_SOUND_TICTAC_BREAK];

@@ -12,8 +12,7 @@
 
 #define SIXTY_SECONDS 60
 
-@implementation Timer
-{
+@implementation Timer {
     NSInteger secondsRemaining;
     __strong NSTimer *timer;
     __strong TimerContext *context;
@@ -24,7 +23,7 @@
 
 - (id)initWithListener:(id <TimerListener>)aListener {
     self = [super init];
-    if(self) {
+    if (self) {
         listener = aListener;
     }
     return self;
@@ -40,10 +39,10 @@
 - (void)startTimer {
     [timer invalidate];
     timer = [NSTimer timerWithTimeInterval:1.0
-                     target:self
-                     selector:@selector(tick:)
-                     userInfo:nil
-                     repeats:YES];
+            target:self
+            selector:@selector(tick:)
+            userInfo:nil
+            repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -57,7 +56,7 @@
 
 - (void)tick:(NSTimer *)aTimer {
     secondsRemaining--;
-    if(secondsRemaining > 0) {
+    if (secondsRemaining > 0) {
         [listener timerTick:secondsRemaining];
     }
     else {

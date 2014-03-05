@@ -8,8 +8,7 @@
 
 #import "Tomighty.h"
 
-@implementation Tomighty
-{
+@implementation Tomighty {
     NSInteger pomodoroCount;
 }
 
@@ -19,7 +18,7 @@
 
 - (void)incrementPomodoroCount {
     pomodoroCount++;
-    if(pomodoroCount > 4) {
+    if (pomodoroCount > 4) {
         pomodoroCount = 1;
     }
 }

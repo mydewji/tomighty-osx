@@ -11,6 +11,7 @@
 @interface TimerContext : NSObject
 
 - (id)initWithName:(NSString *)name;
+
 - (NSString *)name;
 
 @end

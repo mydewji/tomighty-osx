@@ -11,7 +11,9 @@
 @interface Tomighty : NSObject
 
 - (NSInteger)pomodoroCount;
+
 - (void)incrementPomodoroCount;
+
 - (void)resetPomodoroCount;
 
 @end

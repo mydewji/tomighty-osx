@@ -10,11 +10,14 @@
 
 @interface StatusIcon : NSObject
 
-- (id)initWithStatusMenu:(NSMenu*)statusMenu;
+- (id)initWithStatusMenu:(NSMenu *)statusMenu;
 
 - (void)normal;
+
 - (void)pomodoro;
+
 - (void)shortBreak;
+
 - (void)longBreak;
 
 - (void)setTitle:(NSString *)newTitle;

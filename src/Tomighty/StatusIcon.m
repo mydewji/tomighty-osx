@@ -9,8 +9,7 @@
 #import "StatusIcon.h"
 #import "ImageLoader.h"
 
-@implementation StatusIcon
-{
+@implementation StatusIcon {
     __strong NSStatusItem *statusItem;
     __strong NSImage *blackIcon;
     __strong NSImage *whiteIcon;
@@ -21,12 +20,12 @@
 
 - (id)initWithStatusMenu:(NSMenu *)statusMenu {
     self = [super init];
-    
-    if(self) {
+
+    if (self) {
         [self createIcons];
         [self createStatusItem:statusMenu];
     }
-    
+
     return self;
 }
 
@@ -62,7 +61,7 @@
     [statusItem setMenu:statusMenu];
 }
 
--(void)setTitle:(NSString *)newTitle {
+- (void)setTitle:(NSString *)newTitle {
     [statusItem setTitle:newTitle];
 }
 
