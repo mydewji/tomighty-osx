@@ -27,6 +27,7 @@
     [self.sound_on_timer_finish setState:[Preferences boolForKey:PREF_SOUND_TIMER_FINISH]];
     [self.sound_tictac_during_pomodoro setState:[Preferences boolForKey:PREF_SOUND_TICTAC_POMODORO]];
     [self.sound_tictac_during_break setState:[Preferences boolForKey:PREF_SOUND_TICTAC_BREAK]];
+    [self.general_show_in_status selectItemAtIndex:[Preferences integerForKey:PREF_GENERAL_SHOW_IN_STATUS]];
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
@@ -60,6 +61,10 @@
 
 - (IBAction)save_sound_play_tictac_during_break:(id)sender {
 	[Preferences setBool:([self.sound_tictac_during_break state] == NSOnState) forKey:PREF_SOUND_TICTAC_BREAK];
+}
+
+-(IBAction)save_general_show_in_status:(id)sender {
+    [Preferences setInteger:self.general_show_in_status.indexOfSelectedItem forKey:PREF_GENERAL_SHOW_IN_STATUS];
 }
 
 @end

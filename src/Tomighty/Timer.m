@@ -19,6 +19,7 @@
     __strong TimerContext *context;
     __weak id <TimerListener> listener;
 }
+@synthesize secondsRemaining = secondsRemaining;
 
 - (id)initWithListener:(id <TimerListener>)aListener {
     self = [super init];

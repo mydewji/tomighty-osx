@@ -38,6 +38,19 @@
     
     [self initMenuItemsIcons];
     [self updateRemainingTime:0];
+    [self updateStatusBarTitle:0 justStarted:NO];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(preferencesChangedNotification:) name:PREF_CHANGED_NOTIFICATION object:nil];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PREF_CHANGED_NOTIFICATION object:nil];
+}
+
+- (void)preferencesChangedNotification:(NSNotification *)notif {
+    if (notif.userInfo[PREF_CHANGED_NOTIFICATION_ITEM_KEY] == PREF_GENERAL_SHOW_IN_STATUS) {
+        [self updateStatusBarTitle:timer.secondsRemaining justStarted:NO];
+    }
 }
 
 - (void)initMenuItemsIcons {
@@ -89,10 +102,12 @@
 
 - (void)timerTick:(NSInteger)secondsRemaining {
     [self updateRemainingTime:secondsRemaining];
+    [self updateStatusBarTitle:secondsRemaining justStarted:NO];
 }
 
 - (void)timerStarted:(NSInteger)secondsRemaining context:(TimerContext *)context {
     [self updateRemainingTime:secondsRemaining];
+    [self updateStatusBarTitle:secondsRemaining justStarted:YES];
     [self.stopTimerMenuItem setEnabled:YES];
     
     if([Preferences boolForKey:PREF_SOUND_TIMER_START]) {
@@ -108,6 +123,7 @@
     [sounds stopTicTac];
     [statusIcon normal];
     [self updateRemainingTime:0];
+    [self updateStatusBarTitle:0 justStarted:NO];
     [self.stopTimerMenuItem setEnabled:NO];
     [self deactivateAllTimerMenuItems];
 }
@@ -147,6 +163,30 @@
     
     NSString *text = [NSString stringWithFormat:@"%02d:%02d", (int)minutes, (int)seconds];
     [self.remainingTimeMenuItem setTitle:text];
+}
+
+- (void)updateStatusBarTitle:(NSInteger)secondsRemaining justStarted:(BOOL)justStarted {
+    // just started parameter is used to prevent flickering when starting timer and
+    // we should display remaining minutes in status bar (it would show 26min for the
+    // first second and then 25min otherwise)
+    
+    NSInteger showInStatus = [Preferences integerForKey:PREF_GENERAL_SHOW_IN_STATUS];
+    if (showInStatus == 0) {
+        [statusIcon setTitle:@""];
+    } else if (secondsRemaining <= 0){
+        [statusIcon setTitle:@" Stopped"];
+    } else {
+        NSInteger minutes = secondsRemaining / 60;
+        NSInteger seconds = secondsRemaining % 60;
+    
+        NSString *text = nil;
+        if (showInStatus == 1) {
+            text = [NSString stringWithFormat:@" %d m", (int)minutes + (justStarted ? 0:1)];
+        } else if (showInStatus == 2) {
+            text = [NSString stringWithFormat:@" %02d:%02d", (int)minutes, (int)seconds];
+        }
+        [statusIcon setTitle:text];
+    }
 }
 
 - (void)updatePomodoroCountText {

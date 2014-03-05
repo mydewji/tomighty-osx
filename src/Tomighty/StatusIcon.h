@@ -17,4 +17,6 @@
 - (void)shortBreak;
 - (void)longBreak;
 
+- (void)setTitle:(NSString *)newTitle;
+
 @end

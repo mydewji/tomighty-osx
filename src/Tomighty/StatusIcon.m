@@ -55,11 +55,15 @@
 }
 
 - (void)createStatusItem:(NSMenu *)statusMenu {
-    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSSquareStatusItemLength];
+    statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     [statusItem setHighlightMode:YES];
     [statusItem setImage:blackIcon];
     [statusItem setAlternateImage:whiteIcon];
     [statusItem setMenu:statusMenu];
+}
+
+-(void)setTitle:(NSString *)newTitle {
+    [statusItem setTitle:newTitle];
 }
 
 @end

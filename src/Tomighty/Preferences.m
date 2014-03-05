@@ -15,6 +15,11 @@ NSString * const PREF_SOUND_TIMER_START = @"sound_timer_start";
 NSString * const PREF_SOUND_TIMER_FINISH = @"sound_timer_finish";
 NSString * const PREF_SOUND_TICTAC_POMODORO = @"sound_tictac_pomodoro";
 NSString * const PREF_SOUND_TICTAC_BREAK = @"sound_tictac_break";
+NSString * const PREF_GENERAL_SHOW_IN_STATUS = @"general_show_in_status";
+
+NSString * const PREF_CHANGED_NOTIFICATION = @"com.tomighty.preferencesChanged";
+NSString * const PREF_CHANGED_NOTIFICATION_ITEM_KEY = @"com.tomighty.preferencesChanged.changedKey";
+
 
 @implementation Preferences
 
@@ -33,6 +38,8 @@ NSString * const PREF_SOUND_TICTAC_BREAK = @"sound_tictac_break";
         [defaultValues setObject:[NSNumber numberWithInt:1] forKey:PREF_SOUND_TIMER_FINISH];
         [defaultValues setObject:[NSNumber numberWithInt:1] forKey:PREF_SOUND_TICTAC_POMODORO];
         [defaultValues setObject:[NSNumber numberWithInt:1] forKey:PREF_SOUND_TICTAC_BREAK];
+        [defaultValues setObject:[NSNumber numberWithInt:0] forKey:PREF_GENERAL_SHOW_IN_STATUS];
+
         
         [[NSUserDefaults standardUserDefaults] registerDefaults:defaultValues];
     }
@@ -48,10 +55,14 @@ NSString * const PREF_SOUND_TICTAC_BREAK = @"sound_tictac_break";
 
 + (void)setInteger:(NSInteger)value forKey:(NSString *)key {
 	[[NSUserDefaults standardUserDefaults] setInteger:value forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PREF_CHANGED_NOTIFICATION object:nil userInfo:@{PREF_CHANGED_NOTIFICATION_ITEM_KEY:key}];
 }
 
 + (void)setBool:(BOOL)value forKey:(NSString *)key {
 	[[NSUserDefaults standardUserDefaults] setBool:value forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PREF_CHANGED_NOTIFICATION object:nil userInfo:@{PREF_CHANGED_NOTIFICATION_ITEM_KEY:key}];
 }
 
 @end
