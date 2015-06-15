@@ -1,13 +1,14 @@
 //
-//  Tomighty - http://www.tomighty.org
+//  main.m
+//  Tomighty
 //
-//  This software is licensed under the Apache License Version 2.0:
-//  http://www.apache.org/licenses/LICENSE-2.0.txt
+//  Created by Célio Cidral Jr on 23/07/13.
+//  Copyright (c) 2013 Célio Cidral Jr. All rights reserved.
 //
 
 #import <AppKit/AppKit.h>
 
-int main(int argc, const char * argv[])
+int main(int argc, char *argv[])
 {
-    return NSApplicationMain(argc, argv);
+    return NSApplicationMain(argc, (const char **)argv);
 }
